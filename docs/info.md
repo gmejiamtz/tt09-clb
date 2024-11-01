@@ -9,12 +9,12 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+Putting something here for now because its failing just docs
 
 ## How to test
 
-Explain how to use your project
+I will try to find the make commands for this
 
 ## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+To place the ISSI memory in the breadboard somewhere
