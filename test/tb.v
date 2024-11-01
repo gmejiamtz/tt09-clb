@@ -47,16 +47,18 @@ module tb ();
   );
 
 // clock generation
-always 
-#(clock_period/2) clk=~clk;
+initial begin
+            clk <= '0;
+            forever #(20) clk = ~clk;
+        end
 
  initial begin
   clk = 0;
   ui_in = '0; 
   uio_in = '0; 
   rst_n = 1;
-  #1000 rst_n = 0;
-  #1000000000;
+  #(1000) rst_n = 0;
+  #(1000000000);
  end 
 
 
