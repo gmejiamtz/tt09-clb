@@ -1,6 +1,6 @@
 `default_nettype none
 `timescale 1ns / 1ps
-
+`define clock_period 20
 /* This testbench just instantiates the module and makes some convenient wires
    that can be driven / tested by the cocotb test.py.
 */
@@ -28,7 +28,7 @@ module tb ();
 `endif
 
   // Replace tt_um_example with your module name:
-  tt_um_example user_project (
+  tt_um_gmejiamtz uut (
 
       // Include power ports for the Gate Level test:
 `ifdef GL_TEST
@@ -45,5 +45,20 @@ module tb ();
       .clk    (clk),      // clock
       .rst_n  (rst_n)     // not reset
   );
+
+// clock generation
+always 
+#(clock_period/2) clock=~clock;
+
+ initial begin
+  clock = 0;
+  ui_in = '0; 
+  uio_in = '0; 
+  rst_n = 1;
+  #1000 rst_n = 0;
+  #1000000000;
+ end 
+
+
 
 endmodule

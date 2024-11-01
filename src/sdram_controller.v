@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module sdram_controller(
   input         clock,
   input         reset,
