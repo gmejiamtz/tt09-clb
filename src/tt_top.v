@@ -24,5 +24,5 @@ module tt_um_gmejiamtz (
   // List all unused inputs to prevent warnings
 
   //just instantiate sdram
-  sdram_controller controller (.clock(clk),.reset(!rst_n),.io_read_row_addresses_0('0),.io_read_col_addresses_0('0),.io_read_data_valid_0(),.io_read_start_0('0),.io_write_row_addresses_0('0),.io_write_col_addresses_0('0),.io_write_data_valid_0(),.io_write_start_0(),.io_sdram_control_cs(),.io_sdram_control_ras(),.io_sdram_control_cas,.io_sdram_control_we,.io),.io_sdram_control_address_bus(),.io_state_out());
+  sdram_controller controller (.clock(clk),.reset(!rst_n),.io_read_row_addresses_0('0),.io_read_col_addresses_0('0),.io_read_data_valid_0(),.io_read_start_0('0),.io_write_row_addresses_0('0),.io_write_col_addresses_0('0),.io_write_data_valid_0(),.io_write_start_0(),.io_sdram_control_cs(),.io_sdram_control_ras(),.io_sdram_control_cas(),.io_sdram_control_we(),.io_sdram_control_address_bus(),.io_state_out());
 endmodule
