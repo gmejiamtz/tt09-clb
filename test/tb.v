@@ -48,10 +48,10 @@ module tb ();
 
 // clock generation
 always 
-#(clock_period/2) clock=~clock;
+#(clock_period/2) clk=~clk;
 
  initial begin
-  clock = 0;
+  clk = 0;
   ui_in = '0; 
   uio_in = '0; 
   rst_n = 1;
