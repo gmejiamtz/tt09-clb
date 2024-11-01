@@ -5,7 +5,7 @@
 
 `default_nettype none
 
-module tt_um_example (
+module tt_um_gmejiamtz (
     input  wire [7:0] ui_in,    // Dedicated inputs
     output wire [7:0] uo_out,   // Dedicated outputs
     input  wire [7:0] uio_in,   // IOs: Input path
@@ -22,6 +22,7 @@ module tt_um_example (
   assign uio_oe  = 0;
 
   // List all unused inputs to prevent warnings
-  wire _unused = &{ena, clk, rst_n, 1'b0};
 
+  //just instantiate sdram
+  sdram_controller controller (.clock(clk),.reset(!rst_n),.io_read_row_addresses_0('0),.io_read_col_addresses_0('0),.io_read_data_valid_0(),.io_read_start_0('0),.io_write_row_addresses_0('0),.io_write_col_addresses_0('0),.io_write_data_valid_0(),.io_write_start_0(),.io_sdram_control_cs(),.io_sdram_control_ras(),.io_sdram_control_cas,.io_sdram_control_we,.io)io_sdram_control_address_bus(),.io_state_out());
 endmodule
