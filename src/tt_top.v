@@ -24,14 +24,14 @@ module tt_um_gmejiamtz (
   reg [7:0]  read_r,write_r;
   //just instantiate sdram
   sdram_controller controller (.clock(clk),.reset(!rst_n),
-                              .io_read_row_address(ui_in[0]),
-                              .io_read_col_address(ui_in[1]),
+                              .io_read_row_address({13'b0,ui_in[0]}),
+                              .io_read_col_address({13'b0,ui_in[1]}),
                               .io_read_data_valid(read_valid),
                               .io_read_start(ui_in[2]),
                               .io_read_data(uio_out),
-                              .io_write_row_address(ui_in[3]),
-                              .io_write_data(ui_in[7:6]),
-                              .io_write_col_address(ui_in[4]),
+                              .io_write_row_address({13'b0,ui_in[3]}),
+                              .io_write_data({6'b0,ui_in[7:6]}),
+                              .io_write_col_address({13'b0,ui_in[4]}),
                               .io_write_data_valid(write_valid),
                               .io_write_start(ui_in[5]),
                               .io_sdram_control_cs(sdram_crtl[3]),
@@ -49,7 +49,7 @@ module tt_um_gmejiamtz (
     if(read_valid) begin
       read_r = dq;
     end
-    if(write_r) begin
+    if(write_valid) begin
       write_r = dq;
     end
   end
