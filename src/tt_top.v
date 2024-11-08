@@ -16,14 +16,44 @@ module tt_um_gmejiamtz (
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
 );
-
-  // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uio_out = 0;
-  assign uio_oe  = 0;
-
-  // List all unused inputs to prevent warnings
-
+  wire [3:0] sdram_state,sdram_crtl;
+  wire [15:0] sdram_out; 
+  wire [13:0] address;
+  wire dqm, read_valid, write_valid;
+  wire [7:0] dq,read_data,write_data;
+  reg [7:0]  read_r,write_r;
   //just instantiate sdram
-  sdram_controller controller (.clock(clk),.reset(!rst_n),.io_read_row_address('0),.io_read_col_address('0),.io_read_data_valid(),.io_read_start('0),.io_read_data(),.io_write_row_address('0),.io_write_data('0),.io_write_col_address('0),.io_write_data_valid(),.io_write_start(),.io_sdram_control_cs(),.io_sdram_control_ras(),.io_sdram_control_cas(),.io_sdram_control_we(),.io_sdram_control_address_bus(),.io_sdram_control_dqm(),.io_sdram_control_dq(),.io_state_out());
+  sdram_controller controller (.clock(clk),.reset(!rst_n),
+                              .io_read_row_address(ui_in[0]),
+                              .io_read_col_address(ui_in[1]),
+                              .io_read_data_valid(read_valid),
+                              .io_read_start(ui_in[2]),
+                              .io_read_data(uio_out),
+                              .io_write_row_address(ui_in[3]),
+                              .io_write_data(ui_in[7:6]),
+                              .io_write_col_address(ui_in[4]),
+                              .io_write_data_valid(write_valid),
+                              .io_write_start(ui_in[5]),
+                              .io_sdram_control_cs(sdram_crtl[3]),
+                              .io_sdram_control_ras(sdram_crtl[2]),
+                              .io_sdram_control_cas(sdram_crtl[1]),
+                              .io_sdram_control_we(sdram_crtl[0]),
+                              .io_sdram_control_address_bus(address),
+                              .io_sdram_control_dqm(dqm),
+                              .io_sdram_control_dq(dq),
+                              .io_state_out(sdram_state));
+  //write and read data multiplex
+  always @(*) begin
+    read_r = '0;
+    write_r = '0;
+    if(read_valid) begin
+      read_r = dq;
+    end
+    if(write_r) begin
+      write_r = dq;
+    end
+  end
+
+  //output and inout multiplex
+  
 endmodule

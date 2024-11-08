@@ -56,8 +56,8 @@ initial begin
   clk = 0;
   ui_in = '0; 
   uio_in = '0; 
-  rst_n = 1;
-  #(1000) rst_n = 0;
+  rst_n = 0;
+  #(1000) rst_n = 1;
   #(1000000000);
   $finish;
  end 

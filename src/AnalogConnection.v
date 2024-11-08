@@ -1,3 +1,4 @@
+`timescale 1ns / 1ps
 module AnalogConnection(
      inout [7:0] data_inout,
      output [7:0] read_data,
