@@ -5,12 +5,10 @@ import cocotb
 from cocotb.clock import Clock
 from cocotb.triggers import ClockCycles
 
-
 @cocotb.test()
-async def test_a_not_async(dut):
-    seed = 0b01010101
+async def main_test(dut):
     print(dir(dut))
-    dut._log.info("Start Test: not A (Async)")
+    seeds = {"not": 0b01010101, "and2": 0b10001000, "or2": 0b11101110, "xor2": 0b01100110, "nand2": 0b01110111, "nor2": 0b00010001, "nand3": 0b01111111, "nor3": 0b00000001}
     # Set the clock period to 10 us (100 KHz)
     clock = Clock(dut.clk, 10, units="us")
     cocotb.start_soon(clock.start())
@@ -22,7 +20,18 @@ async def test_a_not_async(dut):
     dut.rst_n.value = 0
     await ClockCycles(dut.clk, 10)
     dut.rst_n.value = 1
-    dut._log.info("LUT3 Seeding")
+    await test_a_not_async(dut,seeds["not"])
+    await test_a_b_and_async(dut,seeds["and2"])
+    await test_a_b_or_async(dut,seeds["or2"])
+    await test_a_b_xor_async(dut,seeds["xor2"])
+    await test_a_b_nand_async(dut,seeds["nand2"])
+    await test_a_b_nor_async(dut, seeds["nor2"])
+    await test_a_b_c_nand_async(dut,seeds["nand3"])
+    await test_a_b_c_nor_async(dut,seeds["nor3"])
+    dut._log.info("All Tests Completed Successfully!")
+
+async def test_a_not_async(dut,seed):
+    dut._log.info("Start Test: not A (Async)")
     dut.uio_in.value = seed
     dut.ui_in.value = 0b00001000
     await ClockCycles(dut.clk,1)
@@ -37,26 +46,11 @@ async def test_a_not_async(dut):
         dut._log.info(f"not A:{bin(a_value)}")
         assert dut.uo_out.value == (~a_value & 0b00000001)
         input_value += 1
-    dut._log.info("Test Over")
+    await ClockCycles(dut.clk,2)
 
 
-@cocotb.test()
-async def test_a_b_and_async(dut):
-    seed = 0b10001000
-    print(dir(dut))
+async def test_a_b_and_async(dut,seed):
     dut._log.info("Start Test: A and B (Async)")
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, units="us")
-    cocotb.start_soon(clock.start())
-    # Reset
-    dut._log.info("Reset")
-    dut.ena.value = 1
-    dut.ui_in.value = 0
-    dut.uio_in.value = 0
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
-    dut.rst_n.value = 1
-    dut._log.info("LUT3 Seeding")
     dut.uio_in.value = seed
     dut.ui_in.value = 0b00001000
     await ClockCycles(dut.clk,1)
@@ -72,26 +66,10 @@ async def test_a_b_and_async(dut):
         dut._log.info(f"A:{bin(a_value)} and B:{bin(b_value)}")
         assert dut.uo_out.value == ((a_value & b_value) & 0b00000001)
         input_value += 1
-    dut._log.info("Test Over")
+    await ClockCycles(dut.clk,2)
 
-
-@cocotb.test()
-async def test_a_b_or_async(dut):
-    seed = 0b11101110
-    print(dir(dut))
+async def test_a_b_or_async(dut, seed):
     dut._log.info("Start Test: A or B (Async)")
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, units="us")
-    cocotb.start_soon(clock.start())
-    # Reset
-    dut._log.info("Reset")
-    dut.ena.value = 1
-    dut.ui_in.value = 0
-    dut.uio_in.value = 0
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
-    dut.rst_n.value = 1
-    dut._log.info("LUT3 Seeding")
     dut.uio_in.value = seed
     dut.ui_in.value = 0b00001000
     await ClockCycles(dut.clk,1)
@@ -107,25 +85,10 @@ async def test_a_b_or_async(dut):
         dut._log.info(f"A:{bin(a_value)} or B:{bin(b_value)}")
         assert dut.uo_out.value == ((a_value | b_value) & 0b00000001)
         input_value += 1
-    dut._log.info("Test Over")
+    await ClockCycles(dut.clk,2)
 
-@cocotb.test()
-async def test_a_b_xor_async(dut):
-    seed = 0b01100110
-    print(dir(dut))
+async def test_a_b_xor_async(dut,seed):
     dut._log.info("Start Test: A xor B (Async)")
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, units="us")
-    cocotb.start_soon(clock.start())
-    # Reset
-    dut._log.info("Reset")
-    dut.ena.value = 1
-    dut.ui_in.value = 0
-    dut.uio_in.value = 0
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
-    dut.rst_n.value = 1
-    dut._log.info("LUT3 Seeding")
     dut.uio_in.value = seed
     dut.ui_in.value = 0b00001000
     await ClockCycles(dut.clk,1)
@@ -141,25 +104,10 @@ async def test_a_b_xor_async(dut):
         dut._log.info(f"A:{bin(a_value)} xor B:{bin(b_value)}")
         assert dut.uo_out.value == ((a_value ^ b_value) & 0b00000001)
         input_value += 1
-    dut._log.info("Test Over")
+    await ClockCycles(dut.clk,2)
 
-@cocotb.test()
-async def test_a_b_nand_async(dut):
-    seed = 0b01110111
-    print(dir(dut))
+async def test_a_b_nand_async(dut,seed):
     dut._log.info("Start Test: A nand B (Async)")
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, units="us")
-    cocotb.start_soon(clock.start())
-    # Reset
-    dut._log.info("Reset")
-    dut.ena.value = 1
-    dut.ui_in.value = 0
-    dut.uio_in.value = 0
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
-    dut.rst_n.value = 1
-    dut._log.info("LUT3 Seeding")
     dut.uio_in.value = seed
     dut.ui_in.value = 0b00001000
     await ClockCycles(dut.clk,1)
@@ -175,25 +123,10 @@ async def test_a_b_nand_async(dut):
         dut._log.info(f"A:{bin(a_value)} nand B:{bin(b_value)}")
         assert dut.uo_out.value == (~(a_value & b_value) & 0b00000001)
         input_value += 1
-    dut._log.info("Test Over")
+    await ClockCycles(dut.clk,1)
 
-@cocotb.test()
-async def test_a_b_nor_async(dut):
-    seed = 0b00010001
-    print(dir(dut))
+async def test_a_b_nor_async(dut,seed):
     dut._log.info("Start Test: A nor B (Async)")
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, units="us")
-    cocotb.start_soon(clock.start())
-    # Reset
-    dut._log.info("Reset")
-    dut.ena.value = 1
-    dut.ui_in.value = 0
-    dut.uio_in.value = 0
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
-    dut.rst_n.value = 1
-    dut._log.info("LUT3 Seeding")
     dut.uio_in.value = seed
     dut.ui_in.value = 0b00001000
     await ClockCycles(dut.clk,1)
@@ -209,25 +142,10 @@ async def test_a_b_nor_async(dut):
         dut._log.info(f"A:{bin(a_value)} nor B:{bin(b_value)}")
         assert dut.uo_out.value == (~(a_value | b_value) & 0b00000001)
         input_value += 1
-    dut._log.info("Test Over")
+    await ClockCycles(dut.clk,1)
 
-@cocotb.test()
-async def test_a_b_c_nand_async(dut):
-    seed = 0b01111111
-    print(dir(dut))
+async def test_a_b_c_nand_async(dut,seed):
     dut._log.info("Start Test: A nand B nand C (Async)")
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, units="us")
-    cocotb.start_soon(clock.start())
-    # Reset
-    dut._log.info("Reset")
-    dut.ena.value = 1
-    dut.ui_in.value = 0
-    dut.uio_in.value = 0
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
-    dut.rst_n.value = 1
-    dut._log.info("LUT3 Seeding")
     dut.uio_in.value = seed
     dut.ui_in.value = 0b00001000
     await ClockCycles(dut.clk,1)
@@ -244,25 +162,10 @@ async def test_a_b_c_nand_async(dut):
         dut._log.info(f"A:{bin(a_value)} nand B:{bin(b_value)} nand C:{bin(c_value)}")
         assert dut.uo_out.value == (~(a_value & b_value & c_value) & 0b00000001)
         input_value += 1
-    dut._log.info("Test Over")
+    await ClockCycles(dut.clk,1)
 
-@cocotb.test()
-async def test_a_b_c_nor_async(dut):
-    seed = 0b00000001
-    print(dir(dut))
+async def test_a_b_c_nor_async(dut,seed):
     dut._log.info("Start Test: A nor B nor C (Async)")
-    # Set the clock period to 10 us (100 KHz)
-    clock = Clock(dut.clk, 10, units="us")
-    cocotb.start_soon(clock.start())
-    # Reset
-    dut._log.info("Reset")
-    dut.ena.value = 1
-    dut.ui_in.value = 0
-    dut.uio_in.value = 0
-    dut.rst_n.value = 0
-    await ClockCycles(dut.clk, 10)
-    dut.rst_n.value = 1
-    dut._log.info("LUT3 Seeding")
     dut.uio_in.value = seed
     dut.ui_in.value = 0b00001000
     await ClockCycles(dut.clk,1)
@@ -279,4 +182,4 @@ async def test_a_b_c_nor_async(dut):
         dut._log.info(f"A:{bin(a_value)} nor B:{bin(b_value)} nor C:{bin(c_value)}")
         assert dut.uo_out.value == (~(a_value | b_value | c_value) & 0b00000001)
         input_value += 1
-    dut._log.info("Test Over")
+    await ClockCycles(dut.clk,1)
