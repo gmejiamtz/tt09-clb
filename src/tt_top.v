@@ -17,6 +17,35 @@ module tt_um_gmejiamtz (
     input  wire       rst_n     // reset_n - low to reset
 );
   wire comb_out;
-  assign uio_oe = '0;
+  reg is_sync_r,comb_out_r, out_r;
+
+  //make a lut 3
   LUT3 lut (.clk_i(clk),.resetn(rst_n),.new_seed_i(ui_in[3]),.args_i(ui_in[2:0]),.seed_i(uio_in),.out_o(comb_out));
+  //setting the lut to me "synchronous" eg a 2 cycle read instead of 1
+  always @(posedge clk) begin
+    if(!rst_n) begin
+      is_sync_r <= 1'b0;
+    end else if(ui_in[3]) begin 
+      is_sync_r <= ui_in[4];
+    end
+  end
+
+  //ff for a sync clk - will be a 2 cycle delay with this LUT design
+  always @(posedge clk) begin
+    if(!rst_n) begin
+      comb_out_r <= '0;
+    end else begin
+      comb_out_r <= comb_out;
+    end
+  end
+
+  always @(*) begin
+    if (is_sync_r) begin
+      out_r = comb_out_r;
+    end else begin
+      out_r = comb_out;
+    end
+  end
+  assign uo_out = {7'b0,out_r};
+  assign uio_oe = '0;
 endmodule
