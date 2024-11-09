@@ -16,44 +16,7 @@ module tt_um_gmejiamtz (
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
 );
-  wire [3:0] sdram_state,sdram_crtl;
-  wire [15:0] sdram_out; 
-  wire [13:0] address;
-  wire dqm, read_valid, write_valid;
-  wire [7:0] dq,read_data,write_data;
-  reg [7:0]  read_r,write_r;
-  //just instantiate sdram
-  sdram_controller controller (.clock(clk),.reset(!rst_n),
-                              .io_read_row_address({13'b0,ui_in[0]}),
-                              .io_read_col_address({13'b0,ui_in[1]}),
-                              .io_read_data_valid(read_valid),
-                              .io_read_start(ui_in[2]),
-                              .io_read_data(uio_out),
-                              .io_write_row_address({13'b0,ui_in[3]}),
-                              .io_write_data({6'b0,ui_in[7:6]}),
-                              .io_write_col_address({13'b0,ui_in[4]}),
-                              .io_write_data_valid(write_valid),
-                              .io_write_start(ui_in[5]),
-                              .io_sdram_control_cs(sdram_crtl[3]),
-                              .io_sdram_control_ras(sdram_crtl[2]),
-                              .io_sdram_control_cas(sdram_crtl[1]),
-                              .io_sdram_control_we(sdram_crtl[0]),
-                              .io_sdram_control_address_bus(address),
-                              .io_sdram_control_dqm(dqm),
-                              .io_sdram_control_dq(dq),
-                              .io_state_out(sdram_state));
-  //write and read data multiplex
-  always @(*) begin
-    read_r = '0;
-    write_r = '0;
-    if(read_valid) begin
-      read_r = dq;
-    end
-    if(write_valid) begin
-      write_r = dq;
-    end
-  end
-
-  //output and inout multiplex
-  
+  wire comb_out;
+  assign uio_oe = '0;
+  LUT3 lut (.clk_i(clk),.resetn(rst_n),.new_seed_i(ui_in[3]),.args_i(ui_in[2:0]),.seed_i(uio_in),.out_o(comb_out));
 endmodule
