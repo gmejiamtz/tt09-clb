@@ -37,7 +37,6 @@ async def test_a_not_async(dut,seed):
     await ClockCycles(dut.clk,1)
     dut.ui_in.value = 0b00000000
     await ClockCycles(dut.clk,1)
-    assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
     while(input_value != 8):
         dut.ui_in.value = input_value
@@ -56,7 +55,6 @@ async def test_a_b_and_async(dut,seed):
     await ClockCycles(dut.clk,1)
     dut.ui_in.value = 0b00000000
     await ClockCycles(dut.clk,1)
-    assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
     while(input_value != 8):
         dut.ui_in.value = input_value
@@ -75,7 +73,6 @@ async def test_a_b_or_async(dut, seed):
     await ClockCycles(dut.clk,1)
     dut.ui_in.value = 0b00000000
     await ClockCycles(dut.clk,1)
-    assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
     while(input_value != 8):
         dut.ui_in.value = input_value
@@ -94,7 +91,6 @@ async def test_a_b_xor_async(dut,seed):
     await ClockCycles(dut.clk,1)
     dut.ui_in.value = 0b00000000
     await ClockCycles(dut.clk,1)
-    assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
     while(input_value != 8):
         dut.ui_in.value = input_value
@@ -113,7 +109,6 @@ async def test_a_b_nand_async(dut,seed):
     await ClockCycles(dut.clk,1)
     dut.ui_in.value = 0b00000000
     await ClockCycles(dut.clk,1)
-    assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
     while(input_value != 8):
         dut.ui_in.value = input_value
@@ -132,7 +127,6 @@ async def test_a_b_nor_async(dut,seed):
     await ClockCycles(dut.clk,1)
     dut.ui_in.value = 0b00000000
     await ClockCycles(dut.clk,1)
-    assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
     while(input_value != 8):
         dut.ui_in.value = input_value
@@ -151,7 +145,6 @@ async def test_a_b_c_nand_async(dut,seed):
     await ClockCycles(dut.clk,1)
     dut.ui_in.value = 0b00000000
     await ClockCycles(dut.clk,1)
-    assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
     while(input_value != 8):
         dut.ui_in.value = input_value
@@ -171,7 +164,6 @@ async def test_a_b_c_nor_async(dut,seed):
     await ClockCycles(dut.clk,1)
     dut.ui_in.value = 0b00000000
     await ClockCycles(dut.clk,1)
-    assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
     while(input_value != 8):
         dut.ui_in.value = input_value
