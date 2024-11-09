@@ -1,4 +1,3 @@
-`timescale 1ns / 1ps
 module LUT3(
     input clk_i,
     input resetn,
