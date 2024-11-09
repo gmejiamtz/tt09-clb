@@ -42,7 +42,7 @@ async def test_a_not_async(dut):
 
 @cocotb.test()
 async def test_a_b_and_async(dut):
-    seed = 0b00001000
+    seed = 0b10001000
     print(dir(dut))
     dut._log.info("Start Test: A and B (Async)")
     # Set the clock period to 10 us (100 KHz)
@@ -64,7 +64,7 @@ async def test_a_b_and_async(dut):
     await ClockCycles(dut.clk,1)
     assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
-    while(input_value != 4):
+    while(input_value != 8):
         dut.ui_in.value = input_value
         a_value = input_value & 0b00000001
         b_value = (input_value & 0b00000010) >> 1
@@ -77,7 +77,7 @@ async def test_a_b_and_async(dut):
 
 @cocotb.test()
 async def test_a_b_or_async(dut):
-    seed = 0b00001110
+    seed = 0b11101110
     print(dir(dut))
     dut._log.info("Start Test: A or B (Async)")
     # Set the clock period to 10 us (100 KHz)
@@ -99,7 +99,7 @@ async def test_a_b_or_async(dut):
     await ClockCycles(dut.clk,1)
     assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
-    while(input_value != 4):
+    while(input_value != 8):
         dut.ui_in.value = input_value
         a_value = input_value & 0b00000001
         b_value = (input_value & 0b00000010) >> 1
@@ -111,7 +111,7 @@ async def test_a_b_or_async(dut):
 
 @cocotb.test()
 async def test_a_b_xor_async(dut):
-    seed = 0b00000110
+    seed = 0b01100110
     print(dir(dut))
     dut._log.info("Start Test: A xor B (Async)")
     # Set the clock period to 10 us (100 KHz)
@@ -133,7 +133,7 @@ async def test_a_b_xor_async(dut):
     await ClockCycles(dut.clk,1)
     assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
-    while(input_value != 4):
+    while(input_value != 8):
         dut.ui_in.value = input_value
         a_value = input_value & 0b00000001
         b_value = (input_value & 0b00000010) >> 1
@@ -145,7 +145,7 @@ async def test_a_b_xor_async(dut):
 
 @cocotb.test()
 async def test_a_b_nand_async(dut):
-    seed = 0b00000111
+    seed = 0b01110111
     print(dir(dut))
     dut._log.info("Start Test: A nand B (Async)")
     # Set the clock period to 10 us (100 KHz)
@@ -167,7 +167,7 @@ async def test_a_b_nand_async(dut):
     await ClockCycles(dut.clk,1)
     assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
-    while(input_value != 4):
+    while(input_value != 8):
         dut.ui_in.value = input_value
         a_value = input_value & 0b00000001
         b_value = (input_value & 0b00000010) >> 1
@@ -179,7 +179,7 @@ async def test_a_b_nand_async(dut):
 
 @cocotb.test()
 async def test_a_b_nor_async(dut):
-    seed = 0b00000001
+    seed = 0b00010001
     print(dir(dut))
     dut._log.info("Start Test: A nor B (Async)")
     # Set the clock period to 10 us (100 KHz)
@@ -201,7 +201,7 @@ async def test_a_b_nor_async(dut):
     await ClockCycles(dut.clk,1)
     assert dut.uut.lut.lookup_table_r.value == seed
     input_value = 0
-    while(input_value != 4):
+    while(input_value != 8):
         dut.ui_in.value = input_value
         a_value = input_value & 0b00000001
         b_value = (input_value & 0b00000010) >> 1
