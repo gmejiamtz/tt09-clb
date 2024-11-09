@@ -21,7 +21,7 @@ async def test_project(dut):
     dut.uio_in.value = 0
     dut.rst_n.value = 0
     await ClockCycles(dut.clk, 10)
-    dut._log("LUT3 Seeding")
+    dut._log.info("LUT3 Seeding")
     dut.uio_in.value = 0b00001000
     assert True
 
