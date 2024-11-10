@@ -62,7 +62,7 @@ async def test_a_not(dut,seed, sync=False):
         dut._log.info(f"A:{bin(a_value)} Out:{dut.uut.uo_out.value}")
         assert dut.uo_out.value == (~a_value & 0b00000001)
         input_value += 1
-    await ClockCycles(dut.clk,2)
+    await ClockCycles(dut.clk,1)
 
 async def test_a_b_and(dut,seed,sync=False):
     dut._log.info(f"Start Test: A and B | Is Sync:{sync}")
