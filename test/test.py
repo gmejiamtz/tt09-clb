@@ -32,6 +32,7 @@ async def main_test(dut):
     await test_a_b_c_majority_async(dut,seeds["majority"])
     await test_a_b_c_even_parity_async(dut,seeds["even_parity"])
     await test_a_b_c_one_hot_async(dut,seeds["one_hot"])
+    await test_a_not_sync(dut,seeds["not"])
     dut._log.info("All Tests Completed Successfully!")
 
 async def test_a_not_async(dut,seed):
@@ -236,3 +237,20 @@ async def test_a_b_c_one_hot_async(dut,seed):
         assert dut.uo_out.value == (((a_value & ~b_value & ~c_value) | (~a_value & b_value & ~c_value) | (~a_value & ~b_value & c_value)) & 0b00000001)
         input_value += 1
     await ClockCycles(dut.clk,1)
+
+async def test_a_not_sync(dut,seed):
+    dut._log.info("Start Test: not A (sync)")
+    dut.uio_in.value = seed
+    dut.ui_in.value = 0b00011000
+    await ClockCycles(dut.clk,1)
+    dut.ui_in.value = 0b00010000
+    await ClockCycles(dut.clk,1)
+    input_value = 0
+    while(input_value != 8):
+        dut.ui_in.value = input_value | 0b00010000
+        a_value = input_value & 0b00000001
+        await ClockCycles(dut.clk,2)
+        dut._log.info(f"A:{bin(a_value)} Out:{dut.uut.uo_out.value}")
+        assert dut.uo_out.value == (~a_value & 0b00000001)
+        input_value += 1
+    await ClockCycles(dut.clk,2)
