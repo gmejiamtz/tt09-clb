@@ -15,6 +15,7 @@ module tt_um_gmejiamtz (
     input  wire       clk,      // clock
     input  wire       rst_n     // reset_n - low to reset
 );
+  /*
   wire comb_out;
   reg is_sync_r,comb_out_r, out_r;
 
@@ -45,8 +46,9 @@ module tt_um_gmejiamtz (
       out_r = comb_out;
     end
   end
-  assign uo_out = {7'b0,out_r};
+  */
+  assign uo_out = {7'b0,~(&ui_in[2:0])};
   assign uio_oe = '0;
-  wire _unused = &{ena, ui_in[7:5],1'b0};
+  wire _unused = &{ena, clk, rst_n, ui_in[7:3],1'b0, uio_in};
   assign uio_out = '0;
 endmodule
